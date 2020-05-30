@@ -1,13 +1,21 @@
 /* See LICENSE file for copyright and license details. */
-
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+
+// systray
+static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
+static const unsigned int systrayspacing = 2;   /* systray spacing */
+static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
+static const int showsystray        = 1;     /* 0 means no systray */
+
+// vanity gaps
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
+
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 0;        /* 0 means bottom bar */
 static const int focusonwheel       = 0;
@@ -53,7 +61,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -67,23 +75,6 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
-
-// Volume commands
-static const char *volume_mute[] = { "$HOME/.scripts/system/amixer_controller.sh",   "0%" };
-static const char *volume_up[]   = { "$HOME/.scripts/system/amixer_controller.sh", "10%+" };
-static const char *volume_down[] = { "$HOME/.scripts/system/amixer_controller.sh", "10%-" };
-
-// Screenshot of area
-static const char *screen_area_clip[] = { "maim", "-u", "-s", "-m", "1", "|", "xclip", "-selection", "clipboard", "-t", "image/png" };
-static const char *screen_area_file[] = { "maim", "-u", "-s", "-m", "1", "|", "tee", "~/Pictures/Screenshot_$(date +%s).png" };
-
-// Screenshot of active window
-static const char *screen_window_clip[] = { "maim", "-B", "-u", "-i", "$(xdotool getactivewindow)", "|", "xclip", "-selection", "clipboard", "-t", "image/png" };
-static const char *screen_window_file[] = { "maim", "-B", "-u", "-i", "$(xdotool getactivewindow)", "|", "tee", "~/Pictures/Screenshot_$(date +%s).png" };
-
-// Screenshot of full screen
-static const char *screen_full_clip[] = { "maim", "-u", "|", "xclip", "-selection", "clipboard", "-t", "image/png" };
-static const char *screen_full_file[] = { "maim", "-u", "|", "tee", "~/Pictures/Screenshot_$(date +%s).png" };
 
 #include <X11/XF86keysym.h>
 static Key keys[] = {
@@ -115,13 +106,21 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 
     // Volume control
-    { 0, XF86XK_AudioMute,        spawn, SHCMD("pamixer --allow-boost -i 3") },
+    { 0, XF86XK_AudioMute,        spawn, SHCMD("pamixer -t") },
     { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("pamixer --allow-boost -d 5") },
     { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("pamixer --allow-boost -i 5") },
 
     // Screenshot of chosen area
-    //{ 0, XK_Print, spawn, { .v = screen_area_clip } },
-    { 0, XF86XK_Tools, spawn, SHCMD("maim -u -s -m 1") },
+    { 0, XK_Print, spawn, SHCMD("maim -u -s -m 1 | xclip -selection clipboard -t image/png") }, 
+    { 0|ShiftMask, XK_Print, spawn, SHCMD("maim -u -s -m 1 | tee ~/Pictures/Screenshot_$(date +$s.png)") }, 
+
+    // Screenshot of active window
+    { 0|ControlMask, XK_Print, spawn, SHCMD("maim -B -u -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png") }, 
+    { 0|ShiftMask|ControlMask, XK_Print, spawn, SHCMD("maim -B -u -i $(xdotool getactivewindow) | tee ~/Pictures/Screenshot_$(date +%s).png") }, 
+    
+    // Screenshot of full screen
+    { MODKEY, XK_Print, spawn, SHCMD("maim -u | xclip -selection clipboard -t image/png") },
+    { MODKEY|ShiftMask, XK_Print, spawn, SHCMD("maim -u | tee ~/Pictures/Screenshot_$(date +%s).png") }, 
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
@@ -132,6 +131,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
+
 	{ MODKEY|ShiftMask,             XK_e,      quit,           {0} },
 };
 
