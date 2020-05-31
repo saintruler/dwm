@@ -68,6 +68,7 @@ static const char *dmenucmd[]       = { "dmenu_run", "-l", "10", "-i", "-m", dme
 static const char *termcmd[]        = { "st", NULL };
 static const char *browsercmd[]     = { "firefox", NULL };
 static const char *filemanagercmd[] = { "st", "-e", "ranger", NULL };
+static const char *htopcmd[]        = { "st", "-e", "htop", NULL };
 
 #include <X11/XF86keysym.h>
 static Key keys[] = {
@@ -82,7 +83,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
+//	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[1]} },
@@ -95,28 +96,6 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-
-    // App bindings
-    { MODKEY,                       XK_w,      spawn,          {.v = browsercmd } },
-    { MODKEY,                       XK_b,      spawn,          {.v = filemanagercmd } },
-
-    // Volume control
-    { 0, XF86XK_AudioMute,        spawn, SHCMD("pamixer -t") },
-    { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("pamixer --allow-boost -d 5") },
-    { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("pamixer --allow-boost -i 5") },
-
-    // Screenshot of chosen area
-    { 0, XK_Print, spawn, SHCMD("maim -u -s -m 1 | xclip -selection clipboard -t image/png") }, 
-    { 0|ShiftMask, XK_Print, spawn, SHCMD("maim -u -s -m 1 | tee ~/Pictures/Screenshot_$(date +$s.png)") }, 
-
-    // Screenshot of active window
-    { 0|ControlMask, XK_Print, spawn, SHCMD("maim -B -u -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png") }, 
-    { 0|ShiftMask|ControlMask, XK_Print, spawn, SHCMD("maim -B -u -i $(xdotool getactivewindow) | tee ~/Pictures/Screenshot_$(date +%s).png") }, 
-    
-    // Screenshot of full screen
-    { MODKEY, XK_Print, spawn, SHCMD("maim -u | xclip -selection clipboard -t image/png") },
-    { MODKEY|ShiftMask, XK_Print, spawn, SHCMD("maim -u | tee ~/Pictures/Screenshot_$(date +%s).png") }, 
-
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -126,8 +105,30 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-
 	{ MODKEY|ShiftMask,             XK_e,      quit,           {0} },
+
+    // App bindings
+    { MODKEY,                       XK_w,      spawn,          {.v = browsercmd } },
+    { MODKEY,                       XK_b,      spawn,          {.v = filemanagercmd } },
+    { MODKEY,                       XK_Tab,    spawn,          {.v = htopcmd } },
+
+    // Volume control
+    { 0, XF86XK_AudioMute,        spawn, SHCMD("pamixer -t") },
+    { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("pamixer --allow-boost -d 5") },
+    { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("pamixer --allow-boost -i 5") },
+
+    // Screenshot of chosen area
+    { 0,           XK_Print, spawn, SHCMD("maim -u -s -m 1 | xclip -selection clipboard -t image/png") }, 
+    { 0|ShiftMask, XK_Print, spawn, SHCMD("maim -u -s -m 1 | tee ~/Pictures/Screenshot_$(date +$s.png)") }, 
+
+    // Screenshot of active window
+    { 0|ControlMask,           XK_Print, spawn, SHCMD("maim -B -u -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png") }, 
+    { 0|ShiftMask|ControlMask, XK_Print, spawn, SHCMD("maim -B -u -i $(xdotool getactivewindow) | tee ~/Pictures/Screenshot_$(date +%s).png") }, 
+    
+    // Screenshot of full screen
+    { MODKEY,           XK_Print, spawn, SHCMD("maim -u | xclip -selection clipboard -t image/png") },
+    { MODKEY|ShiftMask, XK_Print, spawn, SHCMD("maim -u | tee ~/Pictures/Screenshot_$(date +%s).png") }, 
+
 };
 
 /* button definitions */
