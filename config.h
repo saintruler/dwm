@@ -13,8 +13,8 @@ static const int showsystray             = 1;   /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int focusonwheel       = 0;
-static const char *fonts[]          = { "monospace:size=13" };
-static const char dmenufont[]       = "monospace:size=13";
+static const char *fonts[]          = { "monospace:size=15" };
+static const char dmenufont[]       = "monospace:size=15";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
@@ -113,9 +113,9 @@ static Key keys[] = {
     { MODKEY,                       XK_Tab,    spawn,          {.v = htopcmd } },
 
     // Volume control
-    { 0, XF86XK_AudioMute,        spawn, SHCMD("pamixer -t") },
-    { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("pamixer --allow-boost -d 5") },
-    { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("pamixer --allow-boost -i 5") },
+    { 0, XF86XK_AudioMute,        spawn, SHCMD("pamixer -t; pkill -RTMIN+9 dwmblocks") },
+    { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("pamixer --allow-boost -d 5; pkill -RTMIN+9 dwmblocks") },
+    { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("pamixer --allow-boost -i 5; pkill -RTMIN+9 dwmblocks") },
 
     // Screenshot of chosen area
     { 0,           XK_Print, spawn, SHCMD("maim -u -s -m 1 | xclip -selection clipboard -t image/png") }, 
@@ -138,7 +138,9 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+    { ClkStatusText,        0,              Button1,        sigdwmblocks,   {.i = 1} },
+    { ClkStatusText,        0,              Button2,        sigdwmblocks,   {.i = 2} },
+    { ClkStatusText,        0,              Button3,        sigdwmblocks,   {.i = 3} },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
