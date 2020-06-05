@@ -262,6 +262,7 @@ static void updatetitle(Client *c);
 static void updatewindowtype(Client *c);
 static void updatewmhints(Client *c);
 static void view(const Arg *arg);
+static void scrollview(const Arg *arg);
 static Client *wintoclient(Window w);
 static Monitor *wintomon(Window w);
 static Client *wintosystrayicon(Window w);
@@ -2404,6 +2405,24 @@ view(const Arg *arg)
 	selmon->seltags ^= 1; /* toggle sel tagset */
 	if (arg->ui & TAGMASK)
 		selmon->tagset[selmon->seltags] = arg->ui & TAGMASK;
+	focus(NULL);
+	arrange(selmon);
+}
+
+void
+scrollview(const Arg *arg)
+{
+	int ui = 0;
+	if (arg->i < 0)
+		ui = selmon->tagset[selmon->seltags] >> 1;
+	else if (arg->i > 0)
+		ui = selmon->tagset[selmon->seltags] << 1;
+
+	if ((ui & TAGMASK) == 0 || (ui & TAGMASK) == selmon->tagset[selmon->seltags])
+		return;
+	selmon->seltags ^= 1; /* toggle sel tagset */
+	if (ui & TAGMASK)
+		selmon->tagset[selmon->seltags] = ui;
 	focus(NULL);
 	arrange(selmon);
 }

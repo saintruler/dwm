@@ -103,6 +103,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
+    { MODKEY,                       XK_Left,   scrollview,     {.i = -1 } },
+    { MODKEY,                       XK_Right,  scrollview,     {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 };
 
