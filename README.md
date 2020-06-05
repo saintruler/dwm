@@ -9,3 +9,5 @@ Installed patches:
 * [tilegap](https://dwm.suckless.org/patches/tilegap/) for nice gaps between windows
 * [statuscmd-signal](https://dwm.suckless.org/patches/statuscmd/) for support of clicks on bar in dwmblocks 
   (needed manual merge because of conflict with systray)
+* scrollview for scrolling through tags (used with touchpad, for example). Written by me, therefore
+  the link to suckless site is missing.
