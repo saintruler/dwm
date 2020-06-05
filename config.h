@@ -107,6 +107,11 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_e,      quit,           {0} },
 
+    // My functions
+    { MODKEY,                       XK_Left,   scrollview,     {.i = -1 } },
+    { MODKEY,                       XK_Right,  scrollview,     {.i = +1 } },
+
+
     // App bindings
     { MODKEY,                       XK_w,      spawn,          {.v = browsercmd } },
     { MODKEY,                       XK_b,      spawn,          {.v = filemanagercmd } },
