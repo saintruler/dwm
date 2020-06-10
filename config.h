@@ -112,6 +112,8 @@ static Key keys[] = {
     { MODKEY,                       XK_w,      spawn,          SHCMD("$BROWSER") },
     { MODKEY,                       XK_b,      spawn,          SHCMD("$TERMINAL -e ranger") },
     { MODKEY,                       XK_Tab,    spawn,          SHCMD("$TERMINAL -e htop") },
+    { MODKEY|ShiftMask,             XK_b,      spawn,          SHCMD("bluecontrol") },
+    { MODKEY|ShiftMask,             XK_t,      spawn,          SHCMD("$TERMINAL -e tremc") }, 
 
     // Volume control
     { 0, XF86XK_AudioMute,        spawn, SHCMD("pamixer -t; pkill -RTMIN+9 dwmblocks") },
