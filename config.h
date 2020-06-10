@@ -122,6 +122,14 @@ static Key keys[] = {
     { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("pamixer --allow-boost -d 5; pkill -RTMIN+9 dwmblocks") },
     { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("pamixer --allow-boost -i 5; pkill -RTMIN+9 dwmblocks") },
 
+    // Brightness control
+    { 0, XF86XK_MonBrightnessUp,    spawn, SHCMD("xbacklight -inc 5") },
+    { 0, XF86XK_MonBrightnessDown,  spawn, SHCMD("xbacklight -dec 5") },
+
+    // Touchpad notifications
+    { 0, XF86XK_TouchpadOff,        spawn, SHCMD("notify-send 'Touchpad turned off'") },
+    { 0, XF86XK_TouchpadOn,         spawn, SHCMD("notify-send 'Touchpad turned on'") }, 
+
     // Screenshot of chosen area
     { 0,           XK_Print, spawn, SHCMD("maim -u -s -m 1 | xclip -selection clipboard -t image/png") }, 
     { 0|ShiftMask, XK_Print, spawn, SHCMD("maim -u -s -m 1 | tee ~/Pictures/Screenshot_$(date +$s.png)") }, 
