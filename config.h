@@ -65,16 +65,12 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[]       = { "dmenu_run", "-l", "10", "-i", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]        = { "st", NULL };
-static const char *browsercmd[]     = { "firefox", NULL };
-static const char *filemanagercmd[] = { "st", "-e", "ranger", NULL };
-static const char *htopcmd[]        = { "st", "-e", "htop", NULL };
 
 #include <X11/XF86keysym.h>
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_Return, spawn,          SHCMD("$TERMINAL") },
 	{ MODKEY,                       XK_slash,  togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -113,9 +109,9 @@ static Key keys[] = {
 
 
     // App bindings
-    { MODKEY,                       XK_w,      spawn,          {.v = browsercmd } },
-    { MODKEY,                       XK_b,      spawn,          {.v = filemanagercmd } },
-    { MODKEY,                       XK_Tab,    spawn,          {.v = htopcmd } },
+    { MODKEY,                       XK_w,      spawn,          SHCMD("$BROWSER") },
+    { MODKEY,                       XK_b,      spawn,          SHCMD("$TERMINAL -e ranger") },
+    { MODKEY,                       XK_Tab,    spawn,          SHCMD("$TERMINAL -e htop") },
 
     // Volume control
     { 0, XF86XK_AudioMute,        spawn, SHCMD("pamixer -t; pkill -RTMIN+9 dwmblocks") },
