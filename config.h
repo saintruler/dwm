@@ -130,16 +130,16 @@ static Key keys[] = {
     { 0, XF86XK_TouchpadOn,         spawn, SHCMD("notify-send 'Touchpad turned on'") }, 
 
     // Screenshot of chosen area
-    { 0,           XK_Print, spawn, SHCMD("maim -u -s -m 1 | xclip -selection clipboard -t image/png") }, 
-    { 0|ShiftMask, XK_Print, spawn, SHCMD("maim -u -s -m 1 | tee ~/Pictures/Screenshot_$(date +%s.png)") }, 
+    { 0,           XK_Print, spawn, SHCMD("screenshot area to clip") }, 
+    { 0|ShiftMask, XK_Print, spawn, SHCMD("screenshot area to file") }, 
 
     // Screenshot of active window
-    { 0|ControlMask,           XK_Print, spawn, SHCMD("maim -B -u -i $(xdotool getactivewindow) | xclip -selection clipboard -t image/png") }, 
-    { 0|ShiftMask|ControlMask, XK_Print, spawn, SHCMD("maim -B -u -i $(xdotool getactivewindow) | tee ~/Pictures/Screenshot_$(date +%s).png") }, 
+    { 0|ControlMask,           XK_Print, spawn, SHCMD("screenshot window to clip") }, 
+    { 0|ShiftMask|ControlMask, XK_Print, spawn, SHCMD("screenshot window to file") }, 
     
     // Screenshot of full screen
-    { MODKEY,           XK_Print, spawn, SHCMD("maim -u | xclip -selection clipboard -t image/png") },
-    { MODKEY|ShiftMask, XK_Print, spawn, SHCMD("maim -u | tee ~/Pictures/Screenshot_$(date +%s).png") }, 
+    { MODKEY,           XK_Print, spawn, SHCMD("screenshot screen to clip") },
+    { MODKEY|ShiftMask, XK_Print, spawn, SHCMD("screenshot screen to file") }, 
 
 };
 
